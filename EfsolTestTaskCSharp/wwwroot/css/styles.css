@@ -9,12 +9,11 @@
     text-align: center;
 }
 
-
 a.button {
     font-weight: 700;
     color: white;
     text-decoration: none;
-    padding: .8em 1em calc(.8em + 3px);
+    padding: .15em 1em calc(.8em + 3px);
     border-radius: 3px;
     background: rgb(64,199,129);
     box-shadow: 0 -3px rgb(53,167,110) inset;
@@ -33,7 +32,7 @@ a.button {
 
 a.button:hover {
     background: rgb(53, 167, 110);
- }
+}
 
 a.button:active {
     background: rgb(33,147,90);
@@ -49,9 +48,9 @@ a.button:active {
     float: left; /* Float the buttons side by side */
 }
 
-.btn-group button:not(:last-child) {
-    border-right: none; /* Prevent double borders */
-}
+    .btn-group button:not(:last-child) {
+        border-right: none; /* Prevent double borders */
+    }
 
 /* Clear floats (clearfix hack) */
 .btn-group:after {

@@ -13,15 +13,24 @@ namespace EfsolTestTaskCSharp.Controllers
     public class HomeController : Controller
     {
         private readonly IQuestionsRepo _repository;
+        private readonly BdContext _context;
 
-        public HomeController(IQuestionsRepo repository)
+        public HomeController(IQuestionsRepo repository, BdContext context)
         {
             _repository = repository;
+            _context = context;
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet("{id}")]
+        [Route("getinputtypesbyid")]
+        public ActionResult<IEnumerable<PossibleInputAnswer>> GetInputTypesById(int id)
+        {
+            return Ok(_context.PossibleInputAnswes.ToList().Where(e => e.idQuestion == id));
         }
 
         [HttpGet]
@@ -31,6 +40,25 @@ namespace EfsolTestTaskCSharp.Controllers
             var AllQuestions = _repository.GetAllQuestions();
             return Ok(AllQuestions);
         }
+
+        [HttpPost]
+        [Route("createanswer")]
+        public ActionResult CreateUserProfile([FromBody] IEnumerable<Answer> result)
+        {
+            try
+            {
+                foreach (Answer eAnswer in result)
+                _context.Answers.Add(eAnswer);
+
+            _context.SaveChanges();
+
+            return Ok(); //Created()
+        }
+            catch
+            {
+                return BadRequest();
+    }
+}
 
         [HttpGet("ById")]
         public ActionResult<Question> GetQuestionByID(int Id)
@@ -54,11 +82,5 @@ namespace EfsolTestTaskCSharp.Controllers
             Question question = _repository.GetPreviousQuestionByCurrent(Id);
             return Ok(question);
         }
-
-        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        //public IActionResult Error()
-        //{
-        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //}
     }
 }
